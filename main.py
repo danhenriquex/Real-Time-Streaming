@@ -8,15 +8,14 @@ from kafka import KafkaProducer
 from openai import OpenAI
 from playwright.async_api import async_playwright
 
-SBR_WS_CDP = "wss://brd-customer-hl_de170736-zone-real_estate_browser:209kar1t60p3@brd.superproxy.io:9222"
-BASE_URL = "https://zoopla.co.uk"
-LOCATION = "London"
-
 # Load environment variables from .env file
 load_dotenv()
 
 # Access the API key
 api_key = os.getenv("OPENAI_API_KEY")
+SBR_WS_CDP = os.getenv("SBR_WS_CDP")
+BASE_URL = os.getenv("BASE_URL")
+LOCATION = os.getenv("LOCATION")
 
 client = OpenAI(api_key=api_key)
 
@@ -119,12 +118,10 @@ async def run(pw, producer):
             await page.goto(data["link"])
             await page.wait_for_load_state("load")
 
-            content = await page.inner_html('div[data-testid="listing-detiails-page"]')
+            content = await page.inner_html('div[class="_1olqsf95 _1olqsf94"]')
             soup = BeautifulSoup(content, features="html.parser")
 
-            picture_section = soup.find(
-                "section", {"aria-labelledby": "listing-gallery-heading"}
-            )
+            picture_section = soup.find("ol", {"aria-label": "Gallery images"})
 
             pictures = extract_picture(picture_section)
 
@@ -137,6 +134,8 @@ async def run(pw, producer):
 
             data.update(floor_plan)
             data.update(property_details)
+
+            # print("data: ", data)
 
             print("Sending data to Kafka")
             producer.send("properties", value=json.dumps(data).encode("utf-8"))
