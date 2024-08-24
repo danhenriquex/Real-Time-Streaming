@@ -8,6 +8,8 @@ from kafka import KafkaProducer
 from openai import OpenAI
 from playwright.async_api import async_playwright
 
+from constants import properties
+
 # Load environment variables from .env file
 load_dotenv()
 
@@ -87,63 +89,70 @@ def extract_floor_plan(soup):
 
 async def run(pw, producer):
     print("Connecting to Scraping Browser...")
-    browser = await pw.chromium.connect_over_cdp(SBR_WS_CDP)
-    try:
-        page = await browser.new_page()
-        print(f"Connected! Navigating to ${BASE_URL}")
-        await page.goto(BASE_URL)
 
-        # enter london in the search bar and press enter to search
+    for idx, item in enumerate(properties):
+        print(f"Processing property {idx + 1} of {len(properties)}")
+        print("Sending data to Kafka")
+        producer.send("properties", value=json.dumps(item).encode("utf-8"))
+        print("Data sent to Kafka")
 
-        await page.fill('input[name="autosuggest-input"]', LOCATION)
-        await page.keyboard.press("Enter")
+    # browser = await pw.chromium.connect_over_cdp(SBR_WS_CDP)
+    # try:
+    #     page = await browser.new_page()
+    #     print(f"Connected! Navigating to ${BASE_URL}")
+    #     await page.goto(BASE_URL)
 
-        print("Waiting for search results...")
+    #     # enter london in the search bar and press enter to search
 
-        content = await page.inner_html('div[data-testid="regular-listings"]')
+    #     await page.fill('input[name="autosuggest-input"]', LOCATION)
+    #     await page.keyboard.press("Enter")
 
-        soup = BeautifulSoup(content, features="html.parser")
+    #     print("Waiting for search results...")
 
-        for idx, div in enumerate(soup.find_all("div", class_="dkr2t83")):
-            data = {}
-            address = div.find("address").text
-            title = div.find("h2").text
-            link = div.find("a")["href"]
+    #     content = await page.inner_html('div[data-testid="regular-listings"]')
 
-            data.update({"address": address, "title": title, "link": BASE_URL + link})
+    #     soup = BeautifulSoup(content, features="html.parser")
 
-            # goto the listing page
-            print("Navigating to the listing page", link)
+    #     for idx, div in enumerate(soup.find_all("div", class_="dkr2t83")):
+    #         data = {}
+    #         address = div.find("address").text
+    #         title = div.find("h2").text
+    #         link = div.find("a")["href"]
 
-            await page.goto(data["link"])
-            await page.wait_for_load_state("load")
+    #         data.update({"address": address, "title": title, "link": BASE_URL + link})
 
-            content = await page.inner_html('div[class="_1olqsf95 _1olqsf94"]')
-            soup = BeautifulSoup(content, features="html.parser")
+    #         # goto the listing page
+    #         print("Navigating to the listing page", link)
 
-            picture_section = soup.find("ol", {"aria-label": "Gallery images"})
+    #         await page.goto(data["link"])
+    #         await page.wait_for_load_state("load")
 
-            pictures = extract_picture(picture_section)
+    #         content = await page.inner_html('div[class="_1olqsf95 _1olqsf94"]')
+    #         soup = BeautifulSoup(content, features="html.parser")
 
-            data["pictures"] = pictures
+    #         picture_section = soup.find("ol", {"aria-label": "Gallery images"})
 
-            property_details = soup.select_one('div[class="_14bi3x331"]')
-            property_details = extract_property_details(property_details)
+    #         pictures = extract_picture(picture_section)
 
-            floor_plan = extract_floor_plan(soup)
+    #         data["pictures"] = pictures
 
-            data.update(floor_plan)
-            data.update(property_details)
+    #         property_details = soup.select_one('div[class="_14bi3x331"]')
+    #         property_details = extract_property_details(property_details)
 
-            # print("data: ", data)
+    #         floor_plan = extract_floor_plan(soup)
 
-            print("Sending data to Kafka")
-            producer.send("properties", value=json.dumps(data).encode("utf-8"))
-            print("Data sent to Kafka")
-            break
+    #         data.update(floor_plan)
+    #         data.update(property_details)
 
-    finally:
-        await browser.close()
+    #         # print("data: ", data)
+
+    #         print("Sending data to Kafka")
+    #         producer.send("properties", value=json.dumps(data).encode("utf-8"))
+    #         print("Data sent to Kafka")
+    #         break
+
+    # finally:
+    # await browser.close()
 
 
 async def main():

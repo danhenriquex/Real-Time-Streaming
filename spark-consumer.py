@@ -24,7 +24,6 @@ def create_table(session):
         price text,
         title text,
         link text,
-        pictures list<text>,
         floor_plan text,
         address text,
         bedrooms text,
@@ -33,9 +32,9 @@ def create_table(session):
         epc_rating text,
         tenure text,
         time_remaning_on_lease text,
-        service_charge text
-        council_tax_band text
-        ground_rent text
+        service_charge text,
+        council_tax_band text,
+        ground_rent text,
         PRIMARY KEY (link)
         );
     """
@@ -47,14 +46,14 @@ def create_table(session):
 def insert_data(session, **kwargs):
     print("Inserting data...")
 
+    print("Data before insert: ", kwargs.values())
+
     session.execute(
         """
-      
     INSERT INTO property_streams.properties (
         price,
         title,
         link,
-        pictures,
         floor_plan,
         address,
         bedrooms,
@@ -68,21 +67,8 @@ def insert_data(session, **kwargs):
         ground_rent
     )
     VALUES (
-        %s,
-        %s,
-        %s,
-        %s,
-        %s,
-        %s,
-        %s,
-        %s,
-        %s,
-        %s,
-        %s,
-        %s,
-        %s,
-        %s,
-        %s,
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+    )
     """,
         kwargs.values(),
     )
@@ -92,6 +78,8 @@ def insert_data(session, **kwargs):
 
 def create_cassandra_session():
     session = Cluster(["localhost"]).connect()
+
+    print("Session: ", session)
 
     if session is not None:
         create_keyspace(session)
@@ -127,7 +115,6 @@ def main():
             StructField("price", StringType(), True),
             StructField("title", StringType(), True),
             StructField("link", StringType(), True),
-            StructField("pictures", StringType(), True),
             StructField("floor_plan", StringType(), True),
             StructField("address", StringType(), True),
             StructField("bedrooms", StringType(), True),
@@ -148,9 +135,11 @@ def main():
         .select("data.*")
     )
 
-    cassandra_query = kafka_df.writeStream.foreachBatch(
-        lambda batch_df, batch_id: batch_df.foreach(
-            lambda row: insert_data(create_cassandra_session(), **row.asDict())
+    cassandra_query = (
+        kafka_df.writeStream.foreachBatch(
+            lambda batch_df, batch_id: batch_df.foreach(
+                lambda row: insert_data(create_cassandra_session(), **row.asDict())
+            )
         )
         .start()
         .awaitTermination()

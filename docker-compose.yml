@@ -131,7 +131,7 @@ services:
     <<: *spark-worker-image
 
   cassandra_db:
-    image: cassandra:latest
+    image: cassandra:4.0
     container_name: cassandra
     hostname: cassandra
     ports:
