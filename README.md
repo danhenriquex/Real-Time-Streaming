@@ -1,10 +1,6 @@
 <h1 align="center">🚗 Data Project Managment</h1>
 <p align="center" id="objetivo">Learning Data Engineering.</p>
 
-<p align="center">🚀 This project demonstrates a data processing pipeline using Kafka, PySpark, Docker, Cassandra, and OpenAI. The goal was to create a system for real-time data streaming and processing, integrating various technologies to build a scalable and efficient architecture.
-
-</p>
-
 <p align="center">
  <a href="#overview">Overview</a> •
  <a href="#features">Technologies and Tools Used</a> •
@@ -15,13 +11,13 @@
 </p>
 
 <h4 align="center"> 
-	🚧  Machine Learning Project 🚀 Finished  🚧
+	🚧  Data Engineering Project 🚀 Finished  🚧
 </h4>
 
 ### Overview
 
 <div style='margin: 20px' id="overview">
- This project aims to showcase the use of DVC and Hydra in managing a machine learning pipeline. The project is organized into modular Python scripts, each responsible for a specific part of the pipeline. The main goal is to create a reproducible and scalable workflow for machine learning experiments.
+This project demonstrates a data processing pipeline using Kafka, PySpark, Docker, Cassandra, and OpenAI. The goal was to create a system for real-time data streaming and processing, integrating various technologies to build a scalable and efficient architecture.
 </div>
 
 ### Features
