@@ -77,7 +77,7 @@ def insert_data(session, **kwargs):
 
 
 def create_cassandra_session():
-    session = Cluster(["localhost"]).connect()
+    session = Cluster(["cassandra"]).connect()
 
     print("Session: ", session)
 
@@ -93,10 +93,10 @@ def main():
 
     spark = (
         SparkSession.builder.appName("RealEstateConsumer")
-        .config("spark.cassandra.connection.host", "localhost")
+        .config("spark.cassandra.connection.host", "cassandra")
         .config(
             "spark.jar.packages",
-            "com.datastax.spark:spark-cassandra-connector_2.12:3.5.0,"
+            "com.datastax.spark:spark-cassandra-connector_2.13:3.5.0,"
             "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0",
         )
         .getOrCreate()
@@ -104,7 +104,7 @@ def main():
 
     kafka_df = (
         spark.readStream.format("kafka")
-        .option("kafka.bootstrap.servers", "localhost:9092")
+        .option("kafka.bootstrap.servers", "kafka-broker:29092")
         .option("subscribe", "properties")
         .option("startingOffsets", "earliest")
         .load()

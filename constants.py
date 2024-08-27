@@ -1,10 +1,9 @@
-
 properties = [
     {
-        "price": "£500,000",
+        "price": "£5000,000",
         "title": "Modern 2 Bedroom Apartment",
-        "link": 'https://example.com/property/1',
-        "floor_plan": 'https://example.com/floorplans/1.jpg',
+        "link": "https://example.com/property/1",
+        "floor_plan": "https://example.com/floorplans/1.jpg",
         "address": "123 Example Street, London, E1 1EX",
         "bedrooms": 2,
         "bathrooms": 1,
@@ -19,8 +18,8 @@ properties = [
     {
         "price": "£750,000",
         "title": "Spacious 3 Bedroom House",
-        "link": 'https://example.com/property/2',
-        "floor_plan": 'https://example.com/floorplans/2.jpg',
+        "link": "https://example.com/property/2",
+        "floor_plan": "https://example.com/floorplans/2.jpg",
         "address": "456 Another Road, London, SW1A 1AA",
         "bedrooms": 3,
         "bathrooms": 2,
@@ -35,8 +34,8 @@ properties = [
     {
         "price": "£350,000",
         "title": "1 Bedroom Flat",
-        "link": 'https://example.com/property/3',
-        "floor_plan": 'https://example.com/floorplans/3.jpg',
+        "link": "https://example.com/property/3",
+        "floor_plan": "https://example.com/floorplans/3.jpg",
         "address": "789 Sample Lane, London, N1 1AA",
         "bedrooms": 1,
         "bathrooms": 1,
@@ -51,8 +50,8 @@ properties = [
     {
         "price": "£1,200,000",
         "title": "Luxury 4 Bedroom House",
-        "link": 'https://example.com/property/4',
-        "floor_plan": 'https://example.com/floorplans/4.jpg',
+        "link": "https://example.com/property/4",
+        "floor_plan": "https://example.com/floorplans/4.jpg",
         "address": "321 Prestige Avenue, London, W1A 1AA",
         "bedrooms": 4,
         "bathrooms": 3,
@@ -67,8 +66,8 @@ properties = [
     {
         "price": "£625,000",
         "title": "Charming 2 Bedroom Cottage",
-        "link": 'https://example.com/property/5',
-        "floor_plan": 'https://example.com/floorplans/5.jpg',
+        "link": "https://example.com/property/5",
+        "floor_plan": "https://example.com/floorplans/5.jpg",
         "address": "654 Cozy Lane, London, SW3 3AA",
         "bedrooms": 2,
         "bathrooms": 1,
@@ -83,8 +82,8 @@ properties = [
     {
         "price": "£890,000",
         "title": "Modern 3 Bedroom Apartment",
-        "link": 'https://example.com/property/6',
-        "floor_plan": 'https://example.com/floorplans/6.jpg',
+        "link": "https://example.com/property/6",
+        "floor_plan": "https://example.com/floorplans/6.jpg",
         "address": "987 Trendy Street, London, E2 2EX",
         "bedrooms": 3,
         "bathrooms": 2,
@@ -99,8 +98,8 @@ properties = [
     {
         "price": "£450,000",
         "title": "1 Bedroom Loft",
-        "link": 'https://example.com/property/7',
-        "floor_plan": 'https://example.com/floorplans/7.jpg',
+        "link": "https://example.com/property/7",
+        "floor_plan": "https://example.com/floorplans/7.jpg",
         "address": "213 Urban Road, London, NW1 1AA",
         "bedrooms": 1,
         "bathrooms": 1,
@@ -115,8 +114,8 @@ properties = [
     {
         "price": "£1,500,000",
         "title": "5 Bedroom Detached House",
-        "link": 'https://example.com/property/8',
-        "floor_plan": 'https://example.com/floorplans/8.jpg',
+        "link": "https://example.com/property/8",
+        "floor_plan": "https://example.com/floorplans/8.jpg",
         "address": "456 Luxury Avenue, London, W2 2EX",
         "bedrooms": 5,
         "bathrooms": 4,
@@ -131,8 +130,8 @@ properties = [
     {
         "price": "£300,000",
         "title": "Studio Apartment",
-        "link": 'https://example.com/property/9',
-        "floor_plan": 'https://example.com/floorplans/9.jpg',
+        "link": "https://example.com/property/9",
+        "floor_plan": "https://example.com/floorplans/9.jpg",
         "address": "789 Budget Lane, London, SE1 1AA",
         "bedrooms": 0,
         "bathrooms": 1,
@@ -147,8 +146,8 @@ properties = [
     {
         "price": "£950,000",
         "title": "4 Bedroom Townhouse",
-        "link": 'https://example.com/property/10',
-        "floor_plan": 'https://example.com/floorplans/10.jpg',
+        "link": "https://example.com/property/10",
+        "floor_plan": "https://example.com/floorplans/10.jpg",
         "address": "654 Historic Street, London, N3 3EX",
         "bedrooms": 4,
         "bathrooms": 2,

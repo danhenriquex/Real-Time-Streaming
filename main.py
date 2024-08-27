@@ -87,8 +87,69 @@ def extract_floor_plan(soup):
     return plan
 
 
+async def bright_data_extraction(pw, producer):
+    browser = await pw.chromium.connect_over_cdp(SBR_WS_CDP)
+    try:
+        page = await browser.new_page()
+        print(f"Connected! Navigating to ${BASE_URL}")
+        await page.goto(BASE_URL)
+
+        # enter london in the search bar and press enter to search
+
+        await page.fill('input[name="autosuggest-input"]', LOCATION)
+        await page.keyboard.press("Enter")
+
+        print("Waiting for search results...")
+
+        content = await page.inner_html('div[data-testid="regular-listings"]')
+
+        soup = BeautifulSoup(content, features="html.parser")
+
+        for idx, div in enumerate(soup.find_all("div", class_="dkr2t83")):
+            data = {}
+            address = div.find("address").text
+            title = div.find("h2").text
+            link = div.find("a")["href"]
+
+            data.update({"address": address, "title": title, "link": BASE_URL + link})
+
+            # goto the listing page
+            print("Navigating to the listing page", link)
+
+            await page.goto(data["link"])
+            await page.wait_for_load_state("load")
+
+            content = await page.inner_html('div[class="_1olqsf95 _1olqsf94"]')
+            soup = BeautifulSoup(content, features="html.parser")
+
+            picture_section = soup.find("ol", {"aria-label": "Gallery images"})
+
+            pictures = extract_picture(picture_section)
+
+            data["pictures"] = pictures
+
+            property_details = soup.select_one('div[class="_14bi3x331"]')
+            property_details = extract_property_details(property_details)
+
+            floor_plan = extract_floor_plan(soup)
+
+            data.update(floor_plan)
+            data.update(property_details)
+
+            # print("data: ", data)
+
+            print("Sending data to Kafka")
+            producer.send("properties", value=json.dumps(data).encode("utf-8"))
+            print("Data sent to Kafka")
+
+    finally:
+        await browser.close()
+
+
 async def run(pw, producer):
     print("Connecting to Scraping Browser...")
+
+    # For mocked data you can use the code below
 
     for idx, item in enumerate(properties):
         print(f"Processing property {idx + 1} of {len(properties)}")
@@ -96,63 +157,9 @@ async def run(pw, producer):
         producer.send("properties", value=json.dumps(item).encode("utf-8"))
         print("Data sent to Kafka")
 
-    # browser = await pw.chromium.connect_over_cdp(SBR_WS_CDP)
-    # try:
-    #     page = await browser.new_page()
-    #     print(f"Connected! Navigating to ${BASE_URL}")
-    #     await page.goto(BASE_URL)
-
-    #     # enter london in the search bar and press enter to search
-
-    #     await page.fill('input[name="autosuggest-input"]', LOCATION)
-    #     await page.keyboard.press("Enter")
-
-    #     print("Waiting for search results...")
-
-    #     content = await page.inner_html('div[data-testid="regular-listings"]')
-
-    #     soup = BeautifulSoup(content, features="html.parser")
-
-    #     for idx, div in enumerate(soup.find_all("div", class_="dkr2t83")):
-    #         data = {}
-    #         address = div.find("address").text
-    #         title = div.find("h2").text
-    #         link = div.find("a")["href"]
-
-    #         data.update({"address": address, "title": title, "link": BASE_URL + link})
-
-    #         # goto the listing page
-    #         print("Navigating to the listing page", link)
-
-    #         await page.goto(data["link"])
-    #         await page.wait_for_load_state("load")
-
-    #         content = await page.inner_html('div[class="_1olqsf95 _1olqsf94"]')
-    #         soup = BeautifulSoup(content, features="html.parser")
-
-    #         picture_section = soup.find("ol", {"aria-label": "Gallery images"})
-
-    #         pictures = extract_picture(picture_section)
-
-    #         data["pictures"] = pictures
-
-    #         property_details = soup.select_one('div[class="_14bi3x331"]')
-    #         property_details = extract_property_details(property_details)
-
-    #         floor_plan = extract_floor_plan(soup)
-
-    #         data.update(floor_plan)
-    #         data.update(property_details)
-
-    #         # print("data: ", data)
-
-    #         print("Sending data to Kafka")
-    #         producer.send("properties", value=json.dumps(data).encode("utf-8"))
-    #         print("Data sent to Kafka")
-    #         break
-
-    # finally:
-    # await browser.close()
+    # If you want to use a webscrapper from brightdata you can use the function below
+    # Be aware that sometimes the div's id change, so you have to update it
+    # await bright_data_extraction(pw, producer)
 
 
 async def main():
