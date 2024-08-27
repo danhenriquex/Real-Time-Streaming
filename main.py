@@ -8,15 +8,16 @@ from kafka import KafkaProducer
 from openai import OpenAI
 from playwright.async_api import async_playwright
 
-SBR_WS_CDP = "wss://brd-customer-hl_de170736-zone-real_estate_browser:209kar1t60p3@brd.superproxy.io:9222"
-BASE_URL = "https://zoopla.co.uk"
-LOCATION = "London"
+from constants import properties
 
 # Load environment variables from .env file
 load_dotenv()
 
 # Access the API key
 api_key = os.getenv("OPENAI_API_KEY")
+SBR_WS_CDP = os.getenv("SBR_WS_CDP")
+BASE_URL = os.getenv("BASE_URL")
+LOCATION = os.getenv("LOCATION")
 
 client = OpenAI(api_key=api_key)
 
@@ -86,8 +87,7 @@ def extract_floor_plan(soup):
     return plan
 
 
-async def run(pw, producer):
-    print("Connecting to Scraping Browser...")
+async def bright_data_extraction(pw, producer):
     browser = await pw.chromium.connect_over_cdp(SBR_WS_CDP)
     try:
         page = await browser.new_page()
@@ -119,12 +119,10 @@ async def run(pw, producer):
             await page.goto(data["link"])
             await page.wait_for_load_state("load")
 
-            content = await page.inner_html('div[data-testid="listing-detiails-page"]')
+            content = await page.inner_html('div[class="_1olqsf95 _1olqsf94"]')
             soup = BeautifulSoup(content, features="html.parser")
 
-            picture_section = soup.find(
-                "section", {"aria-labelledby": "listing-gallery-heading"}
-            )
+            picture_section = soup.find("ol", {"aria-label": "Gallery images"})
 
             pictures = extract_picture(picture_section)
 
@@ -138,13 +136,30 @@ async def run(pw, producer):
             data.update(floor_plan)
             data.update(property_details)
 
+            # print("data: ", data)
+
             print("Sending data to Kafka")
             producer.send("properties", value=json.dumps(data).encode("utf-8"))
             print("Data sent to Kafka")
-            break
 
     finally:
         await browser.close()
+
+
+async def run(pw, producer):
+    print("Connecting to Scraping Browser...")
+
+    # For mocked data you can use the code below
+
+    for idx, item in enumerate(properties):
+        print(f"Processing property {idx + 1} of {len(properties)}")
+        print("Sending data to Kafka")
+        producer.send("properties", value=json.dumps(item).encode("utf-8"))
+        print("Data sent to Kafka")
+
+    # If you want to use a webscrapper from brightdata you can use the function below
+    # Be aware that sometimes the div's id change, so you have to update it
+    # await bright_data_extraction(pw, producer)
 
 
 async def main():
