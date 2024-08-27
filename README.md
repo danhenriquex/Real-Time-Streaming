@@ -87,7 +87,7 @@ To get started with this project, follow these steps:
 - PySpark: Developed skills in large-scale data processing and analytics using PySpark.
 - Docker: Learned to containerize applications and manage multi-container setups with Docker Compose.
 - Cassandra: Worked with Cassandra for scalable and distributed database solutions.
--OpenAI API: Integrated OpenAI’s language models for advanced text processing and analysis.
+- OpenAI API: Integrated OpenAI’s language models for advanced text processing and analysis.
 
 </div>
 
