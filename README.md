@@ -62,6 +62,7 @@ This project demonstrates a data processing pipeline using Kafka, PySpark, Docke
 - `main.py`: The main script to initialize and run the application.
 
 <div id="tecnologias">
+	
 ### Getting Started
 
 To get started with this project, follow these steps:
