@@ -37,7 +37,7 @@ This project demonstrates a data processing pipeline using Kafka, PySpark, Docke
 
 ### Project Structure
 
-.
+
 ├── jobs/requirements.txt         
 
 ├── jobs/spark-consumer.py                
