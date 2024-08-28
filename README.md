@@ -48,7 +48,8 @@ This project demonstrates a data processing pipeline using Kafka, PySpark, Docke
 
 ├── docker-compose.yml                 
 
-├── main.py                    
+├── main.py          
+</div>
 
 
 ### Scripts Overview
@@ -60,6 +61,7 @@ This project demonstrates a data processing pipeline using Kafka, PySpark, Docke
 - `docker-compose.yml`: Defines and runs multi-container Docker applications, configuring services for Kafka, Cassandra, and other components.
 - `main.py`: The main script to initialize and run the application.
 
+<div id="tecnologias">
 ### Getting Started
 
 To get started with this project, follow these steps:
@@ -79,7 +81,7 @@ To get started with this project, follow these steps:
    ```bash
    python main.py
 
-
+</div>
 ### What I learned
 
 	
