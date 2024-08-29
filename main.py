@@ -8,7 +8,7 @@ from kafka import KafkaProducer
 from openai import OpenAI
 from playwright.async_api import async_playwright
 
-from constants import properties
+from constants import properties, properties_2
 
 # Load environment variables from .env file
 load_dotenv()
@@ -146,12 +146,12 @@ async def bright_data_extraction(pw, producer):
         await browser.close()
 
 
-async def run(pw, producer):
+def run(producer):
     print("Connecting to Scraping Browser...")
 
     # For mocked data you can use the code below
 
-    for idx, item in enumerate(properties):
+    for idx, item in enumerate(properties_2):
         print(f"Processing property {idx + 1} of {len(properties)}")
         print("Sending data to Kafka")
         producer.send("properties", value=json.dumps(item).encode("utf-8"))
@@ -162,11 +162,10 @@ async def run(pw, producer):
     # await bright_data_extraction(pw, producer)
 
 
-async def main():
+def main():
     producer = KafkaProducer(bootstrap_servers=["localhost:9092"], max_block_ms=5000)
-    async with async_playwright() as playwright:
-        await run(playwright, producer)
+    run(producer)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

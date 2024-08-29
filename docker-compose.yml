@@ -103,12 +103,6 @@ services:
     networks:
       - datamasterylab
 
-  sparker-worker-2:
-    <<: *spark-worker-image
-
-  sparker-worker-3:
-    <<: *spark-worker-image
-
   cassandra_db:
     image: cassandra:4.0
     container_name: cassandra
