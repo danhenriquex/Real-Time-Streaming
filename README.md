@@ -1,5 +1,5 @@
 <h1 align="center">🚗 Data Project</h1>
-<p align="center" id="objetivo">Learning Data Engineering. <a href="https://wakatime.com/badge/user/8028aaab-232d-4832-8b66-f103e1d713b9/project/6ac45fa8-dfae-463f-bca1-a84418e4883c"><img src="https://wakatime.com/badge/user/8028aaab-232d-4832-8b66-f103e1d713b9/project/6ac45fa8-dfae-463f-bca1-a84418e4883c.svg" alt="wakatime"></a>
+<p align="center" id="objetivo">Learning Data Engineering. 
  </p> 
 
 
@@ -13,7 +13,7 @@
 </p>
 
 <h4 align="center"> 
-	🚧  Data Engineering Project 🚀 Finished  🚧
+	🚧  Data Engineering Project 🚀 Finished  🚧 <a href="https://wakatime.com/badge/user/8028aaab-232d-4832-8b66-f103e1d713b9/project/6ac45fa8-dfae-463f-bca1-a84418e4883c"><img src="https://wakatime.com/badge/user/8028aaab-232d-4832-8b66-f103e1d713b9/project/6ac45fa8-dfae-463f-bca1-a84418e4883c.svg" alt="wakatime"></a>
 </h4>
 
 ### Overview
