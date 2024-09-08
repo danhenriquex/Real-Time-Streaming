@@ -75,10 +75,27 @@ To get started with this project, follow these steps:
    ```bash
    git clone <repository_url>
    cd <repository_directory>
+
+3. **Setup Environment:**
+
+   ```bash
+   # Install Python version
+   pyenv install 3.10.12
+
+   # Create a virtual environment
+   pyenv virtualenv 3.10.12 <env_name>
+
+   # Activate the environment
+   pyenv activate <env_name>
+
+   # Install dependencies
+   pip install -r jobs/requirements.txt
+   ```
+
 2. **Run Docker Containers**
    ```bash
    docker compose up -d
-3. **Setup databset**
+3. **Setup database**
    ```bash
    spark-submit --packages com.datastax.spark:spark-cassandra-connector_2.12:3.5.0,org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 spark-consumer.pydocker exec -it realestatedataengineering-spark-master-1
 4. **Execute the main script**
