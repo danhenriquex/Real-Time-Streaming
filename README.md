@@ -43,18 +43,15 @@ This project demonstrates a data processing pipeline using Kafka, PySpark, Docke
 
 ### Project Structure
 
-
+```bash
 ├── jobs/requirements.txt         
-
 ├── jobs/spark-consumer.py                
-
 ├── .env.example         
-
 ├── constants.py              
-
 ├── docker-compose.yml                 
-
-├── main.py          
+├── main.py  
+```
+        
 </div>
 
 
@@ -78,12 +75,12 @@ To get started with this project, follow these steps:
    ```bash
    git clone <repository_url>
    cd <repository_directory>
-2. **Setup Environment**
-   ```bash
-   cp .env.example.env
-3. **Run Docker Containers**
+2. **Run Docker Containers**
    ```bash
    docker compose up -d
+3. **Setup databset**
+   ```bash
+   spark-submit --packages com.datastax.spark:spark-cassandra-connector_2.12:3.5.0,org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 spark-consumer.pydocker exec -it realestatedataengineering-spark-master-1
 4. **Execute the main script**
    ```bash
    python main.py
