@@ -120,6 +120,8 @@ To get started with this project, follow these steps:
 
 ---
 
+Fonte: https://www.youtube.com/@CodeWithYu/videos
+
 <!-- <script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script> -->
 
 <div align="left" id="author">
